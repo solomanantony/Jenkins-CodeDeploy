@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soloman Antony</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d0d0d;
+      --accent: #f97316;
+      --accent2: #facc15;
+      --accent3: #a78bfa;
+      --text: #f1f5f9;
+      --muted: #6b7280;
+      --border: #1f1f1f;
+      --card: #141414;
+      --green: #4ade80;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Warm orange glow */
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -150px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(ellipse, rgba(249,115,22,0.1) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Dot grid */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle, rgba(249,115,22,0.07) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .center {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 2rem;
+      max-width: 860px;
+      width: 100%;
+    }
+
+    .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 800;
+      line-height: 1;
+      color: #fff;
+      animation: fadeUp 0.5s 0.1s ease both;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      margin-top: 1.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      animation: fadeUp 0.5s 0.2s ease both;
+    }
+
+    .status {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(74,222,128,0.07);
+      border: 1px solid rgba(74,222,128,0.2);
+      color: var(--green);
+      font-size: 0.7rem;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      letter-spacing: 0.12em;
+      animation: fadeUp 0.5s 0.3s ease both;
+    }
+
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse 1.8s ease infinite;
+    }
+
+    /* Pipeline */
+    .pipeline {
+      margin-top: 3.5rem;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      animation: fadeUp 0.5s 0.4s ease both;
+      flex-wrap: nowrap;
+    }
+
+    .stage {
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1.1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.45rem;
+      min-width: 110px;
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative;
+    }
+
+    .stage:first-child { border-radius: 8px 0 0 8px; }
+    .stage:last-child  { border-radius: 0 8px 8px 0; }
+
+    .stage:hover {
+      transform: translateY(-4px);
+      z-index: 2;
+    }
+
+    /* Individual hover accent colors per stage */
+    .stage.github:hover  { border-color: #e2e8f0; }
+    .stage.jenkins:hover { border-color: #ef4444; }
+    .stage.cp:hover      { border-color: var(--accent); }
+    .stage.cd:hover      { border-color: var(--accent2); }
+    .stage.ec2:hover     { border-color: var(--accent3); }
+
+    .stage-logo {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .stage-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 0.04em;
+    }
+
+    .stage-sub {
+      font-size: 0.6rem;
+      color: var(--muted);
+    }
+
+    .stage-tick {
+      font-size: 0.62rem;
+      padding: 0.18rem 0.45rem;
+      border-radius: 4px;
+      background: rgba(74,222,128,0.08);
+      color: var(--green);
+      border: 1px solid rgba(74,222,128,0.18);
+    }
+
+    .arrow {
+      display: flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0 0.15rem;
+      flex-shrink: 0;
+    }
+
+    /* Animated connecting line under pipeline */
+    .pipeline-track {
+      margin-top: 0.6rem;
+      height: 2px;
+      background: linear-gradient(90deg, #e2e8f0, #ef4444, var(--accent), var(--accent2), var(--accent3));
+      border-radius: 999px;
+      animation: fadeUp 0.5s 0.5s ease both, shimmer 3s linear infinite;
+      background-size: 200% 100%;
+    }
+
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.35; transform: scale(0.65); }
+    }
+
+    @media (max-width: 640px) {
+      .pipeline { flex-direction: column; align-items: stretch; }
+      .stage:first-child { border-radius: 8px 8px 0 0; }
+      .stage:last-child  { border-radius: 0 0 8px 8px; }
+      .stage { flex-direction: row; justify-content: flex-start; gap: 0.75rem; }
+      .arrow { display: none; }
+      .pipeline-track { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="center">
+    <div class="label">// full ci/cd pipeline · live deployment</div>
+
+    <h1>Soloman<br/><em>Antony</em></h1>
+    <p class="tagline">ap-south-2 &nbsp;·&nbsp; EC2 &nbsp;·&nbsp; Apache</p>
+
+    <div class="status">
+      <span class="dot"></span>
+      ALL STAGES SUCCEEDED
+    </div>
+
+    <div class="pipeline">
+      <div class="stage github">
+        <div class="stage-logo">🐙</div>
+        <div class="stage-name">GitHub</div>
+        <div class="stage-sub">Source</div>
+        <div class="stage-tick">✓ Done</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="stage jenkins">
+        <div class="stage-logo">🔧</div>
+        <div class="stage-name">Jenkins</div>
+        <div class="stage-sub">CI Server</div>
+        <div class="stage-tick">✓ Done</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="stage cp">
+        <div class="stage-logo">⚡</div>
+        <div class="stage-name">CodePipeline</div>
+        <div class="stage-sub">Orchestration</div>
+        <div class="stage-tick">✓ Done</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="stage cd">
+        <div class="stage-logo">📦</div>
+        <div class="stage-name">CodeDeploy</div>
+        <div class="stage-sub">Deployment</div>
+        <div class="stage-tick">✓ Done</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="stage ec2">
+        <div class="stage-logo">🖥️</div>
+        <div class="stage-name">EC2</div>
+        <div class="stage-sub">Apache</div>
+        <div class="stage-tick">✓ Live</div>
+      </div>
+    </div>
+
+    <div class="pipeline-track"></div>
+  </div>
+</body>
+</html>
