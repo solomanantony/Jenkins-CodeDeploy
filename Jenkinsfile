@@ -4,12 +4,6 @@ pipeline {
 
     stages {
 
-        stage('Clone Code') {
-            steps {
-                git 'https://github.com/solomanantony/Jenkins-CodeDeploy'
-            }
-        }
-
         stage('Prepare Scripts') {
             steps {
                 sh '''
@@ -47,6 +41,17 @@ pipeline {
                 --region ap-south-2
                 '''
             }
+        }
+    }
+
+    post {
+
+        success {
+            echo 'Deployment completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Check console logs.'
         }
     }
 }
